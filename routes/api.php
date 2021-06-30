@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-Route::group(['middleware' => ['auth:sanctum']], fn (Request $request) => $request->user());
+Route::post('/register', [AuthController::class, 'register']);
