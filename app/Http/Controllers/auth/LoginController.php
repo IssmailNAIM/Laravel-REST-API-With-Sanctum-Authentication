@@ -13,17 +13,17 @@ class LoginController extends Controller
         
         $user = User::where('email', $request->email)->first();
 
-        // if($user->email_verified_at == null) {
-        //     $user->sendEmailVerificationNotification();
-        //     return response([
-        //         'message' => 'Email verification link sent to your email.'
-        //     ], 401);
+        if($user->email_verified_at == null) {
+            $user->sendEmailVerificationNotification();
+            return response([
+                'message' => 'Email verification link sent to your email.'
+            ], 401);
 
-        // } elseif(!Hash::check($request->password, $user->password)) { // Check password
-        //     return response([
-        //         'message' => 'bad credits'
-        //     ], 401);
-        // }
+        } elseif(!Hash::check($request->password, $user->password)) { // Check password
+            return response([
+                'message' => 'bad credits'
+            ], 401);
+        }
 
         $token = $user->createToken('token')->plainTextToken;
 
