@@ -12,13 +12,8 @@ class VerificationController extends Controller
         if (!$request->hasValidSignature()) {
             return response(["message" => "Invalid/Expired url provided."], 401);
         }
-    
+      
         $user = User::findOrFail($user_id);
-    
-        if (!$user->hasVerifiedEmail()) {
-            $user->markEmailAsVerified();
-        }
-    
-        return redirect()->to('/');
+        return $user->hasVerifiedEmail() ? $user->markEmailAsVerified(): redirect()->to('/');
     }
 }
