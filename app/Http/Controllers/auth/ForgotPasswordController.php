@@ -13,4 +13,8 @@ class ForgotPasswordController extends Controller
         Password::sendResetLink($request->only('email'));
         return response()->json(["msg" => 'Reset password link sent on your email id.']);
     }
+    
+    public function forgotPassword(){
+        return view('auth.reset_password');
+    }
 }

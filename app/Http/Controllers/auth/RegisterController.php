@@ -10,16 +10,18 @@ class RegisterController extends Controller
 {
     public function register(registerUserRequest $request) {
 
-        $user = User::create(
-            $request->only('name', 'email') + [
+        $user = User::create($request->only('name', 'email')+ [
             'password' => bcrypt($request->password)
         ]);
 
-        $token = $user->createToken('myapptoken')->plainTextToken;
+        $token = $user->createToken('token')->plainTextToken;
 
+        $user->sendEmailVerificationNotification();
+        
         $response = [
             'user' => $user,
-            'token' => $token
+            'token' => $token,
+            'message' => 'Email verification link sent to your email.'
         ];
 
         return response($response, 201);

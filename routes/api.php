@@ -4,6 +4,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\auth\RegisterController;
+use App\Http\Controllers\auth\VerificationController;
 use App\Http\Controllers\auth\ResetPasswordController;
 use App\Http\Controllers\auth\ForgotPasswordController;
 
@@ -18,14 +19,16 @@ use App\Http\Controllers\auth\ForgotPasswordController;
 |
 */
 
-Route::post('register', [RegisterController::class, 'register']);
 Route::post('login', [LoginController::class, 'login']);
+
+Route::post('register', [RegisterController::class, 'register']);
+Route::get('email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
+
 Route::post('password/email', [ForgotPasswordController::class, 'forgot']);
-Route::post('password/reset',  [ResetPasswordController::class, 'reset']);
+Route::post('password/reset', [ResetPasswordController::class, 'reset']);
+Route::get('forgot_password', [ForgotPasswordController::class, 'forgotPassword'])->name('password.reset');
 
-Route::view('forgot_password', 'auth.reset_password')->name('password.reset');
-
-Route::group(['middleware' => ['auth:sanctum']], function(){
+Route::group(['middleware' => ['auth:sanctum', 'verified']], function(){
     Route::get('users', function () {
         return User::all();
     });
