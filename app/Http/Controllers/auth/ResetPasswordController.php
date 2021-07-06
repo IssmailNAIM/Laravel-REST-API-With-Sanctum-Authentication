@@ -15,10 +15,8 @@ class ResetPasswordController extends Controller
             $user->save();
         });
 
-        if ($reset_password == Password::INVALID_TOKEN) {
-            return response()->json(["msg" => "Invalid token provided"], 400);
-        }
-
-        return response()->json(["msg" => "Password has been successfully changed"]);
+        return $reset_password == Password::INVALID_TOKEN 
+            ? response()->json(["message" => "Invalid token provided"], 400)
+            : response()->json(["message" => "Password has been successfully changed"]);
     }
 }
